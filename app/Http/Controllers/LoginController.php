@@ -13,17 +13,8 @@ class LoginController extends BaseController
 
     public  function login()
     {
+
         echo 18592;
-//        $data=file_get_contents("php://input");
-//
-//        $new_data=base64_decode($data);
-//        $new_data=json_decode($new_data);
-////        print_r($new_data);die;
-//        $data=base64_decode($new_data->pwd);
-//        $public_key=openssl_pkey_get_public("file://".storage_path("key/public.pem"));
-//
-//        openssl_public_decrypt($data,$ii,$public_key);
-//        echo $ii;
     }
 //    public function index(Request $request)
 //    {
