@@ -116,11 +116,11 @@ class LoginController extends BaseController
             return $dd;
         }
     }
-    public function agePeople()
+    public function agePeople(Request $request)
     {
-
+        $ii=$request->input();
         $token=$_GET['token'];
-        die($token);
+        die($ii);
         $uid=$_GET['uid'];
         $ksy_token='login_token:uid'.$uid;
         $redis_token=Redis::get($ksy_token);
