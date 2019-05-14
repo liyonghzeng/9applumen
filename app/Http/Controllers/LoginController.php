@@ -84,7 +84,6 @@ class LoginController extends BaseController
             $new_data= base64_decode($res->password);
             $public_key=openssl_pkey_get_public("file://".storage_path("key/public.pem"));
              openssl_public_decrypt($new_data,$ii,$public_key);
-             dd($ii);
              if($ii == $pwd){
                  $json=[
                      'erron'=>0,
