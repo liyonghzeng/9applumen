@@ -28,3 +28,5 @@ $router->post('qm','ApiPrivateController@qm');
 $router->post('login','LoginController@login');
 
 $router->post('loginadd','LoginController@loginadd');
+
+$router->post('agepeople','LoginController@agePeople');

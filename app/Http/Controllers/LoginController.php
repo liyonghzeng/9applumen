@@ -116,7 +116,11 @@ class LoginController extends BaseController
             return $dd;
         }
     }
-
+    public function agePeople()
+    {
+        $token=$_GET['token'];
+        echo $token;
+    }
 
 //    public function index(Request $request)
 //    {
