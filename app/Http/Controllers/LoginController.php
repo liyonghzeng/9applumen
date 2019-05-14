@@ -119,9 +119,9 @@ class LoginController extends BaseController
     public function agePeople()
     {
         $token=$_GET;
-        $ii = json_encode($token);
-        die($ii);
+
         $uid=$_GET['uid'];
+        die($uid);
         $ksy_token='login_token:uid'.$uid;
         $redis_token=Redis::get($ksy_token);
         $data_json = [
