@@ -118,6 +118,7 @@ class LoginController extends BaseController
     }
     public function agePeople()
     {
+        die(111);
         $token=$_GET['token'];
         $uid=$_GET['uid'];
         $ksy_token='login_token:uid'.$uid;
