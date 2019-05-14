@@ -15,6 +15,7 @@ class LoginController extends BaseController
     {
         $name=$request->input('username');
         $pwd=$request->input('pwd');
+        dd($pwd);
         $public_key=openssl_pkey_get_public("file://".storage_path("key/public.pem"));
         openssl_private_encrypt($pwd,$i,$public_key);
         $base_i=base64_encode($i);
