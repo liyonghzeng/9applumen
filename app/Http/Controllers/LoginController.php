@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Redis;
 class LoginController extends BaseController
 {
 
-    public  function login()
+    public  function login(Request $request)
     {
-
-        echo 18592;
+        $name=$request->input('user_name');
+        $pwd=$request->input('pwd');
+        echo $name;
     }
 //    public function index(Request $request)
 //    {
