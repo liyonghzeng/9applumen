@@ -122,6 +122,13 @@ class LoginController extends BaseController
         $uid=$_GET['uid'];
         $ksy_token='login_token:uid'.$uid;
         $redis_token=Redis::get($ksy_token);
+        $data_json = [
+            'erron'=>0,
+            'mag'=>'正在前往个人中心',
+            'token'=>$redis_token,
+        ];
+        $sss=json_encode($data_json);
+        die($sss);
         if($redis_token){
             if($token == $redis_token){
                 $where =[
