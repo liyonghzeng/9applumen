@@ -13,9 +13,21 @@ class LoginController extends BaseController
 
     public  function login(Request $request)
     {
-        $name=$request->input('user_name');
+        $name=$request->input('username');
         $pwd=$request->input('pwd');
-        echo $name;
+        $public_key=openssl_pkey_get_public("file://".storage_path("key/public.pem"));
+        openssl_private_encrypt($pwd,$i,$public_key);
+        $base_i=base64_encode($i);
+        $where = [
+            'user_name'=>$name,
+            'password'=>$base_i
+        ];
+        $res=DB::table('zcc')->insertGetId($where);
+        if($res){
+            echo 111;
+        }else{
+            echo 222;
+        }
     }
 //    public function index(Request $request)
 //    {
