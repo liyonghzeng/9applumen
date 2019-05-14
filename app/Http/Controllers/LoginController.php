@@ -24,9 +24,19 @@ class LoginController extends BaseController
         ];
         $res=DB::table('zcc')->insertGetId($where);
         if($res){
-            echo 111;
+           $json=[
+               'erron'=>0,
+               'mag'=>'成功'
+           ];
+           $dd=json_encode($json);
+           echo $dd;
         }else{
-            echo 222;
+            $json=[
+                'erron'=>50001,
+                'mag'=>'出现异常'
+            ];
+            $dd=json_encode($json);
+            echo $dd;
         }
     }
 //    public function index(Request $request)
