@@ -118,8 +118,8 @@ class LoginController extends BaseController
     }
     public function agePeople()
     {
-        $token=$_GET['token'];
-        echo $token;
+//        $token=$_GET['token'];
+        echo 1111;
     }
 
 //    public function index(Request $request)
