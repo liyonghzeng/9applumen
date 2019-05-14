@@ -118,8 +118,42 @@ class LoginController extends BaseController
     }
     public function agePeople()
     {
-//        $token=$_GET['token'];
-        echo 1111;
+        $token=$_GET['token'];
+        $uid=$_GET['uid'];
+        $ksy_token='login_token:uid'.$uid;
+        $redis_token=Redis::get($ksy_token);
+        if($redis_token){
+            if($token == $redis_token){
+                $where =[
+                    'u_id'=>$uid
+                ];
+                $res=DB::table('zcc')->where($where)->first();
+                if($res){
+                    $data_json = [
+                        'erron'=>0,
+                        'mag'=>'正在前往个人中心',
+                        'u_id'=>$res->u_id,
+                        'user_name'=>$res->user_name,
+                    ];
+                    $sss=json_encode($data_json);
+                    die($sss);
+                }
+            }else{
+                $json=[
+                    'erron'=>50002,
+                    'mag'=>'参数有误,请按照正确途径登录'
+                ];
+                $dd=json_encode($json);
+                return $dd;
+            }
+        }else{
+            $json=[
+                'erron'=>50002,
+                'mag'=>'参数有误,请按照正确途径登录'
+            ];
+            $dd=json_encode($json);
+            return $dd;
+        }
     }
 
 //    public function index(Request $request)
