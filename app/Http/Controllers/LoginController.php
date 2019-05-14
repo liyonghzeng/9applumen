@@ -66,7 +66,7 @@ class LoginController extends BaseController
                 'mag'=>'用户必填'
             ];
             $dd=json_encode($json);
-            die($dd);
+            return $dd;
         }
         if($pwd==''){
             $json=[
@@ -74,7 +74,7 @@ class LoginController extends BaseController
                 'mag'=>'密码必填'
             ];
             $dd=json_encode($json);
-            die($dd);
+            return $dd;
         }
         $where =[
             'user_name'=>$name
@@ -84,13 +84,29 @@ class LoginController extends BaseController
             $new_data= base64_decode($res->password);
             $public_key=openssl_pkey_get_public("file://".storage_path("key/public.pem"));
              openssl_public_decrypt($new_data,$ii,$public_key);
+             dd($ii);
              if($ii == $pwd){
-                 echo 111;
+                 $json=[
+                     'erron'=>0,
+                     'mag'=>'登录成功'
+                 ];
+                 $dd=json_encode($json);
+               return $dd;
              }else{
-                 echo 333;
+                 $json=[
+                     'erron'=>50002,
+                     'mag'=>'密码或账号出现错误'
+                 ];
+                 $dd=json_encode($json);
+                 return $dd;
              }
         }else{
-            echo 222;
+            $json=[
+                'erron'=>50002,
+                'mag'=>'密码或账号出现错误'
+            ];
+            $dd=json_encode($json);
+            return $dd;
         }
     }
 
