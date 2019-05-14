@@ -15,6 +15,22 @@ class LoginController extends BaseController
     {
         $name=$request->input('username');
         $pwd=$request->input('pwd');
+        if($name==''){
+            $json=[
+                'erron'=>50002,
+                'mag'=>'密码必填'
+            ];
+            $dd=json_encode($json);
+           die($dd);
+        }
+        if($pwd==''){
+            $json=[
+                'erron'=>50002,
+                'mag'=>'密码必填'
+            ];
+            $dd=json_encode($json);
+            die($dd);
+        }
         $public_key=openssl_get_privatekey("file://".storage_path("key/private.pem"));
         openssl_private_encrypt($pwd,$i,$public_key);
         $base_i=base64_encode($i);
@@ -26,7 +42,7 @@ class LoginController extends BaseController
         if($res){
            $json=[
                'erron'=>0,
-               'mag'=>'成功'
+               'mag'=>'注册成功成功'
            ];
            $dd=json_encode($json);
            echo $dd;
@@ -39,6 +55,13 @@ class LoginController extends BaseController
             echo $dd;
         }
     }
+
+    public  function loginadd(Request $request)
+    {
+            echo 111;
+    }
+
+
 //    public function index(Request $request)
 //    {
 ////        echo 1111;
