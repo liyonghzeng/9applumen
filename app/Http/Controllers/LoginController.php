@@ -58,7 +58,33 @@ class LoginController extends BaseController
 
     public  function loginadd(Request $request)
     {
+        $name=$request->input('username');
+        $pwd=$request->input('pwd');
+        if($name==''){
+            $json=[
+                'erron'=>50002,
+                'mag'=>'用户必填'
+            ];
+            $dd=json_encode($json);
+            die($dd);
+        }
+        if($pwd==''){
+            $json=[
+                'erron'=>50002,
+                'mag'=>'密码必填'
+            ];
+            $dd=json_encode($json);
+            die($dd);
+        }
+        $where =[
+            'user_name'=>$name
+        ];
+        $res=DB::table('zcc')->where($where)->first();
+        if($res){
             echo 111;
+        }else{
+            echo 222;
+        }
     }
 
 
