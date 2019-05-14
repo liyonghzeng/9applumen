@@ -8,6 +8,7 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
+
 class LoginController extends BaseController
 {
 
@@ -39,10 +40,16 @@ class LoginController extends BaseController
             'password'=>$base_i
         ];
         $res=DB::table('zcc')->insertGetId($where);
+        $token=md5(Str::random(15).'lyz'.time());
+        $ksy_token='login_token:uid'.$res;
+        Redis::set($ksy_token,$token);
+        Redis::expire($ksy_token,259200);
         if($res){
            $json=[
                'erron'=>0,
-               'mag'=>'注册成功成功'
+               'mag'=>'注册成功成功',
+               'token'=>$token,
+               'uid'=>$res,
            ];
            $dd=json_encode($json);
            echo $dd;
@@ -87,7 +94,8 @@ class LoginController extends BaseController
              if($ii == $pwd){
                  $json=[
                      'erron'=>0,
-                     'mag'=>'登录成功'
+                     'mag'=>'登录成功',
+
                  ];
                  $dd=json_encode($json);
                return $dd;
