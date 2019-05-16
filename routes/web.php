@@ -29,4 +29,7 @@ $router->post('login','LoginController@login');
 
 $router->post('loginadd','LoginController@loginadd');
 
-$router->post('agepeople','LoginController@agePeople');
+//路由中间组
+$router->group(['middleware' => 'checkToken'], function () use ($router){
+    $router->post('agepeople','LoginController@agePeople');
+});

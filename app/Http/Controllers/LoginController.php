@@ -14,6 +14,8 @@ class LoginController extends BaseController
 
     public  function login(Request $request)
     {
+       
+      
         $name=$request->input('username');
         $pwd=$request->input('pwd');
         if($name==''){
@@ -35,27 +37,23 @@ class LoginController extends BaseController
         $public_key=openssl_get_privatekey("file://".storage_path("key/private.pem"));
         openssl_private_encrypt($pwd,$i,$public_key);
         $base_i=base64_encode($i);
+        $url = 'http://passport.998cv.com/userindex';
         $where = [
             'user_name'=>$name,
             'password'=>$base_i
         ];
-        $res=DB::table('zcc')->insertGetId($where);
-
-        if($res){
-           $json=[
-               'erron'=>0,
-               'mag'=>'注册成功成功',
-           ];
-           $dd=json_encode($json);
-           echo $dd;
-        }else{
-            $json=[
-                'erron'=>50001,
-                'mag'=>'出现异常'
-            ];
-            $dd=json_encode($json);
-            echo $dd;
-        }
+        $post_json = json_encode($where);
+        //初始化
+        $ch = curl_init();
+        //传参
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_POST,1);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$post_json);
+        curl_setopt($ch,CURLOPT_HTTPHEADER,['Content-Type:text/plain']);
+        $res= curl_exec($ch);
+        echo $res;
+        curl_close($ch);
     }
 
     public  function loginadd(Request $request)
@@ -79,52 +77,26 @@ class LoginController extends BaseController
             return $dd;
         }
         $where =[
-            'user_name'=>$name
+            'user_name'=>$name,
+            'password'=>$pwd
         ];
-        $res=DB::table('zcc')->where($where)->first();
-        if($res){
-            $new_data= base64_decode($res->password);
-            $public_key=openssl_pkey_get_public("file://".storage_path("key/public.pem"));
-             openssl_public_decrypt($new_data,$ii,$public_key);
-             if($ii == $pwd){
-                 $token=md5(Str::random(15).'lyz'.time());
-                 $ksy_token='login_token:uid'.$res->u_id;
-                 Redis::set($ksy_token,$token);
-                 Redis::expire($ksy_token,259200);
-                 $json=[
-                     'erron'=>0,
-                     'mag'=>'登录成功',
-                     'token'=>$token,
-                     'uid'=>$res->u_id
-                 ];
-                 $dd=json_encode($json);
-               return $dd;
-             }else{
-                 $json=[
-                     'erron'=>50002,
-                     'mag'=>'密码或账号出现错误'
-                 ];
-                 $dd=json_encode($json);
-                 return $dd;
-             }
-        }else{
-            $json=[
-                'erron'=>50002,
-                'mag'=>'密码或账号出现错误'
-            ];
-            $dd=json_encode($json);
-            return $dd;
-        }
+        $url = 'http://passport.998cv.com/useradd';
+        $post_json = json_encode($where);
+        //初始化
+        $ch = curl_init();
+        //传参
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_POST,1);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$post_json);
+        curl_setopt($ch,CURLOPT_HTTPHEADER,['Content-Type:text/plain']);
+        $res= curl_exec($ch);
+        echo $res;
+        curl_close($ch);
     }
     public function agePeople()
     {
         $uid=$_GET['uid'];
-        $token=$_GET['token'];
-
-        $ksy_token='login_token:uid'.$uid;
-        $redis_token=Redis::get($ksy_token);
-        if($redis_token){
-            if($token == $redis_token){
                 $where =[
                     'u_id'=>$uid
                 ];
@@ -133,28 +105,19 @@ class LoginController extends BaseController
                     $data_json = [
                         'erron'=>0,
                         'mag'=>'正在前往个人中心',
-                        'u_id'=>$res->u_id,
-                        'user_name'=>$res->user_name,
+                    ];
+                    $sss=json_encode($data_json);
+                    die($sss);
+                }else{
+                    $data_json = [
+                        'erron'=>55555,
+                        'mag'=>'失败',
                     ];
                     $sss=json_encode($data_json);
                     die($sss);
                 }
-            }else{
-                $json=[
-                    'erron'=>50002,
-                    'mag'=>'参数有误,请按照正确途径登录'
-                ];
-                $dd=json_encode($json);
-                return $dd;
-            }
-        }else{
-            $json=[
-                'erron'=>50002,
-                'mag'=>'参数有误,请按照正确途径登录'
-            ];
-            $dd=json_encode($json);
-            return $dd;
-        }
+
+
     }
 
 //    public function index(Request $request)
