@@ -37,7 +37,7 @@ class LoginController extends BaseController
         $public_key=openssl_get_privatekey("file://".storage_path("key/private.pem"));
         openssl_private_encrypt($pwd,$i,$public_key);
         $base_i=base64_encode($i);
-        $url = 'http://passport.998cv.com/userindex';
+        $url = 'http://passports.998cv.com/userindex';
         $where = [
             'user_name'=>$name,
             'password'=>$base_i
@@ -80,7 +80,7 @@ class LoginController extends BaseController
             'user_name'=>$name,
             'password'=>$pwd
         ];
-        $url = 'http://passport.998cv.com/useradd';
+        $url = 'http://passports.998cv.com/useradd';
         $post_json = json_encode($where);
         //初始化
         $ch = curl_init();
