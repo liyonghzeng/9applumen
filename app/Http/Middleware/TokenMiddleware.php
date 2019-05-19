@@ -18,8 +18,16 @@ class TokenMiddleware
     {
         $uid=$_GET['uid'];
         $token=$_GET['token'];
-        $ksy_token='laravel_database_login_token:uid'.$uid;
-        $redis_token=Redis::get($ksy_token);
+        if($uid==''|| $token==''){
+            $json=[
+                'erron'=>50002,
+                'mag'=>'参数有误,请按照正确途径登录'
+            ];
+            $dd=json_encode($json);
+            return $dd;
+        }else{
+            $ksy_token='laravel_database_login_token:uid'.$uid;
+            $redis_token=Redis::get($ksy_token);
             if($token != $redis_token){
                 $json=[
                     'erron'=>50002,
@@ -27,6 +35,7 @@ class TokenMiddleware
                 ];
                 $dd=json_encode($json);
                 return $dd;
+            }
         }
         return $next($request);
     }

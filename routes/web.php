@@ -28,8 +28,23 @@ $router->post('qm','ApiPrivateController@qm');
 $router->post('login','LoginController@login');
 
 $router->post('loginadd','LoginController@loginadd');
+//商品展示
+$router->post('goodslist','GoodsController@index');
+
+$router->post('partigoods','GoodsController@partiGoods');
+
+
+$router->post('cartdd','GoodsController@cartdd');
+
+$router->post('orderlist','GoodsController@orderlist');
+
 
 //路由中间组
+$router->get('alipayss','GoodsController@alipayss');
+
 $router->group(['middleware' => 'checkToken'], function () use ($router){
     $router->post('agepeople','LoginController@agePeople');
+    $router->post('addcart','GoodsController@addCart');
+    $router->post('carlist','GoodsController@carlist');
+
 });
